@@ -8,12 +8,18 @@ public static class Arrays
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
     public static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
-
-        return []; // replace this return statement with your own
+    // create an array of doubles with the specified length
+          double[] result = new double[length];
+          // loop through the array and fill it with multiples of the number 
+        for (int i = 0; i < length; i++)
+        {
+    // calculate the multiple of the number and assign it to the current index of the array 
+        
+           result[i] = number * (i + 1);
+        }
+        
+        return result;
+    
     }
 
     /// <summary>
@@ -24,10 +30,32 @@ public static class Arrays
     /// Because a list is dynamic, this function will modify the existing data list rather than returning a new list.
     /// </summary>
     public static void RotateListRight(List<int> data, int amount)
-    {
+        
         // TODO Problem 2 Start
         // Remember: Using comments in your program, write down your process for solving this problem
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
-    }
+
+   {
+        // used slicing technique to rotate the list to the right by the specified amount
+        // If the list is empty, there is nothing to rotate.
+        if (data.Count == 0) return;
+
+        // Normalize the amount to ensure it is within the bounds of the list length
+        amount %= data.Count;
+
+        // if the amount is 0, no rotation is needed
+        if (amount == 0) return;
+
+        // extract the last amount elements and the rest of the list
+
+        List<int> LastElemenents = data.GetRange(data.Count - amount, amount);
+
+        // remove the last amount elements from the original list
+        data.RemoveRange(data.Count - amount, amount);
+
+        // insert the last amount elements at the beginning of the list
+        data.InsertRange(0, LastElemenents);
+    }      
+
 }
