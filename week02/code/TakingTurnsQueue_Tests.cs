@@ -11,7 +11,10 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (5), Sue (3) and
     // run until the queue is empty
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
-    // Defect(s) Found: 
+    // Defect(s) Found: the error was expected Bob but actual result was Sue because the enequeue method in person queue was adding the person in the front instead of the back.
+    // that cause the order to be wrong and the test to fail.
+
+    
     public void TestTakingTurnsQueue_FiniteRepetition()
     {
         var bob = new Person("Bob", 2);
@@ -43,7 +46,8 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (5), Sue (3)
     // After running 5 times, add George with 3 turns.  Run until the queue is empty.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, George, Sue, Tim, George, Tim, George
-    // Defect(s) Found: 
+    // Defect(s) Found: just like the previous test, the enqueue method in person queue was adding person in the front of the queue instead of the back.
+    // that cause sue to be be added in the front of the queue, hence the error.
     public void TestTakingTurnsQueue_AddPlayerMidway()
     {
         var bob = new Person("Bob", 2);
@@ -85,7 +89,9 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (Forever), Sue (3)
     // Run 10 times.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
-    // Defect(s) Found: 
+    // Defect(s) Found: The first error was the same as the last two tests, the enqueue method in person queue was adding person in front of the queue instead of the back.
+    // that is why the results was Sue instead of Bob(expected). The second error was that a person with infinite turns was dropped from the queue after their first turn.
+    // GetNextPerson method only re-enqueued when a person's(Tim's turns == 0) turns was greater than 1. 
     public void TestTakingTurnsQueue_ForeverZero()
     {
         var timTurns = 0;
@@ -116,7 +122,8 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Tim (Forever), Sue (3)
     // Run 10 times.
     // Expected Result: Tim, Sue, Tim, Sue, Tim, Sue, Tim, Tim, Tim, Tim
-    // Defect(s) Found: 
+    // Defect(s) Found: The first error was the same as the last three tests, the enque method in person queue was adding person in front of the queue instead of the back.
+    // that is why the results was Sue instead of Tim (expected). The second error was that a person with a negative turns was dropped because the GetNextPerson method only re-enqueued when a person's(Tim's turns == -3) turns was greater than 1.
     public void TestTakingTurnsQueue_ForeverNegative()
     {
         var timTurns = -3;
@@ -143,7 +150,7 @@ public class TakingTurnsQueueTests
     [TestMethod]
     // Scenario: Try to get the next person from an empty queue
     // Expected Result: Exception should be thrown with appropriate error message.
-    // Defect(s) Found: 
+    // Defect(s) Found: No defects found. The test passe as expected.
     public void TestTakingTurnsQueue_Empty()
     {
         var players = new TakingTurnsQueue();
