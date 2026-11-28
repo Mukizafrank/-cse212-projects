@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Globalization;
+using System.Runtime.InteropServices;
 
 public class LinkedList : IEnumerable<int>
 {
@@ -32,7 +34,29 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void InsertTail(int value)
     {
-        // TODO Problem 1
+        // create a new mode
+
+        Node newNode = new(value);
+
+        // if the list is empty, then point both head and tail to the new node
+
+        if (_tail is null)
+
+        {
+            _head = newNode;
+            _tail = newNode;
+            
+        }
+        // if the list is not empty only the tail will be affected
+
+        else
+        {
+            newNode.Prev = _tail; // connect new node to the previous tail
+            _tail.Next = newNode; // connect previous tail to the new node
+            _tail = newNode;      // update the tail to point to the new node
+            
+        }
+
     }
 
 
@@ -64,7 +88,26 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void RemoveTail()
     {
-        // TODO Problem 2
+        // If the list has only one item in it, set the head and tail
+        // to null resulting in an empty list. This condition will also
+        // cover an empty list. Its okay to set to null again.
+        
+        if (_head == _tail)
+        {
+            _head = null;
+            _tail = null;
+    
+
+        }
+         // If the list has more than one item in it, then only the tail 
+         // will be affected
+
+        else if (_tail is not null)
+        {
+            _tail.Prev!.Next = null;
+            _tail = _tail.Prev;
+            
+        }
     }
 
     /// <summary>
@@ -108,7 +151,51 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void Remove(int value)
     {
-        // TODO Problem 3
+       // If the list is empty
+       if (_head == null)
+        {
+            return;
+        }
+
+        // If the value matches the head
+
+        if (_head.Data == value)
+        {
+            RemoveHead();
+            return;
+        }
+
+    
+        // search in the middle
+
+        Node? previous = _head;
+        Node? current = _head.Next;
+
+        while (current != null)
+        {
+            if(current.Data == value)
+        // remove the tail
+            {
+                if (current == _tail)
+            {
+                RemoveTail();
+            }
+            // unlink the middle nodle
+            else
+            {
+                previous!.Next = current.Next;
+                current.Next!.Prev = previous;
+                current.Next = null;
+                current.Prev = null;
+            
+            }
+                return;
+            }
+           previous = current;
+           current = current.Next;
+        }
+          
+
     }
 
     /// <summary>
@@ -116,7 +203,20 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void Replace(int oldValue, int newValue)
     {
-        // TODO Problem 4
+     Node? curr = _head;
+    while (curr != null)
+    {
+        if (curr.Data == oldValue)
+        // change the node's value in place
+        {
+            curr.Data = newValue;   
+        }
+        
+        // keep going and replace all instances
+
+        curr = curr.Next;           
+    }
+
     }
 
     /// <summary>
@@ -146,8 +246,12 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public IEnumerable Reverse()
     {
-        // TODO Problem 5
-        yield return 0; // replace this line with the correct yield return statement(s)
+        var curr = _tail;
+        while(curr is not null)
+        {
+         yield return curr.Data; // replace this line with the correct yield return statement(s)
+         curr = curr.Prev; // Go backward in the linked list
+        }
     }
 
     public override string ToString()
@@ -166,10 +270,14 @@ public class LinkedList : IEnumerable<int>
     {
         return _head is not null && _tail is not null;
     }
+
 }
 
-public static class IntArrayExtensionMethods {
-    public static string AsString(this IEnumerable array) {
+public static class IntArrayExtensionMethods 
+{
+    public static string AsString(this IEnumerable array) 
+    {
         return "<IEnumerable>{" + string.Join(", ", array.Cast<int>()) + "}";
     }
 }
+
